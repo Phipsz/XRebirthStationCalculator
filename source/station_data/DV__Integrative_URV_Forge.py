@@ -5,7 +5,7 @@ from ..station_base import Production
 from ..station_base import Consumption
 
 names = {'L044': 'Integrative URV Forge',
-         'L049': ''}
+         'L049': 'Integrative URV-Montage'}
 
 smodules = [(modules.SteelRefinery, 2),
             (modules.WaferPlant, 2),
