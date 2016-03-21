@@ -1,6 +1,6 @@
 from station_data.station_base import Module
 
-names = {'L044': 'Foodstuffs Fac',
+names = {'L044': 'Foodstuff Fac',
          'L049': 'Nahrungsmittel-Anl'}
 
-FoodstuffsFac = Module(names)
+FoodstuffFac = Module(names)

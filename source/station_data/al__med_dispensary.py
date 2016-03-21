@@ -9,7 +9,7 @@ names = {'L044': 'Med Dispensary',
 
 smodules = [(modules.PharmaPlatform, 2),
             (modules.NarcoticsLab, 2),
-            (modules.herbGarden, 2)]
+            (modules.HerbGarden, 2)]
 
 productions = [Production(wares.MedicalSupplies, 2880.0, 145.0),
                Production(wares.Narcotics, 2880.0, 144.0),

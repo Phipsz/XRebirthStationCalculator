@@ -1,6 +1,6 @@
 from station_data.station_base import Module
 
-names = {'L044': 'Spice Tube',
+names = {'L044': 'Spice Tubes',
          'L049': 'Gewürzröhren'}
 
-SpiceTube = Module(names)
+SpiceTubes = Module(names)

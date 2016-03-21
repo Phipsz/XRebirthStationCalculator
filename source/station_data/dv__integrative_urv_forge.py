@@ -1,15 +1,15 @@
 from station_data import modules
 from station_data import wares
-from station_datstation_data.station_base import Station
-from station_datstation_data.station_base import Production
-from station_datstation_data.station_base import Consumption
+from station_data.station_base import Station
+from station_data.station_base import Production
+from station_data.station_base import Consumption
 
 names = {'L044': 'Integrative URV Forge',
          'L049': 'Integrative URV-Montage'}
 
 smodules = [(modules.SteelRefinery, 2),
             (modules.WaferPlant, 2),
-            (modules.URFWharf, 2)]
+            (modules.URVWharf, 2)]
 
 productions = [Production(wares.RefinedMetals, 2400.0, 148.5),
                Production(wares.SiliconWafers, 2640.0, 143.5),

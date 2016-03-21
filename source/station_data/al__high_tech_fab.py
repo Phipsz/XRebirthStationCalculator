@@ -12,7 +12,7 @@ smodules = [(modules.ChipFab, 2),
             (modules.ScannArFacility, 2)]
 
 productions = [Production(wares.Microchips, 1280.0, 142.5),
-               Production(wares.BioOpticsWiring, 480.0, 140.0),
+               Production(wares.BioOpticWiring, 480.0, 140.0),
                Production(wares.ScanningArray, 80.0, 140.5)]
 
 consumptions = [Consumption(wares.ChemicalCompounds, 1120.0),
