@@ -28,4 +28,4 @@ consumptions = [Consumption(wares.AntimatterCells, 5520.0),
                 Consumption(wares.SiliconWafers, 2880.0),
                 Consumption(wares.Spacefuel, 1824.0, True)]
 
-AL_ArmsTechFab = Station(names, smodules, productions, consumptions)
+AL_ShipTechFab = Station(names, smodules, productions, consumptions)
