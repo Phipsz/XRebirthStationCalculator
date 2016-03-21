@@ -1,4 +1,4 @@
-from ...station_base import Ware
+from station_data.station_base import Ware
 
 names = {'L044': 'Chemical Compounds',
          'L049': 'Chemische Verbindungen'}

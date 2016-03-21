@@ -1,8 +1,8 @@
-import modules
-import wares
-from ..station_base import Station
-from ..station_base import Production
-from ..station_base import Consumption
+from station_data import modules
+from station_data import wares
+from station_datstation_data.station_base import Station
+from station_datstation_data.station_base import Production
+from station_datstation_data.station_base import Consumption
 
 names = {'L044': 'Integrative URV Forge',
          'L049': 'Integrative URV-Montage'}

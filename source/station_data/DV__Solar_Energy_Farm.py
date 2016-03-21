@@ -1,8 +1,8 @@
-import modules
-import wares
-from ..station_base import Station
-from ..station_base import Production
-from ..station_base import Consumption
+from station_data import modules
+from station_data import wares
+from station_data.station_base import Station
+from station_data.station_base import Production
+from station_data.station_base import Consumption
 
 names = {'L044': 'Solar Energy Farm',
          'L049': 'Solarkraftwerk'}

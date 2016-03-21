@@ -1,4 +1,4 @@
-from ...station_base import Module
+from station_data.station_base import Module
 
 names = {'L044': 'Chip Fab',
          'L049': 'Chip-Fab'}
