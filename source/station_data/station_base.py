@@ -31,6 +31,9 @@ class Production:
         self.amount = amount
         self.efficiency = efficiency
 
+    def get_production_rate(self):
+        return self.amount * self.efficiency
+
 
 class Consumption:
     def __init__(self, ware, amount, is_secondary=False):
