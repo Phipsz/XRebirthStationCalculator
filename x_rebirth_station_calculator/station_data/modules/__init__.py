@@ -6,7 +6,8 @@ import importlib
 _modules = glob.glob(os.path.dirname(__file__)+"/*.py")
 _submodules = [os.path.basename(f)[:-3] for f in _modules if os.path.isfile(f)]
 for _module in _submodules:
-    with open(os.path.dirname(__file__) + '/' + _module + '.py') as _mod:
+    with open(os.path.dirname(__file__) + '/' + _module + '.py',
+              encoding='utf-8') as _mod:
         _data = _mod.read()
         _matchObj = re.search(r'^(\S*) = Module\(.*', _data,
                               re.UNICODE | re.MULTILINE)
