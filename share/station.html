@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block html_head %}
+{#<link href="{{ prefix }}static/apc.css" rel="stylesheet" />#}
+{% endblock html_head %}
+{% block header %}{% endblock header %}
+{% block content %}
+<div class="row text-center">
+  <div id="station-info-modules" class="col-md-4">
+    <h3>{{ translations.modules }}</h3>
+    <table class="table table-striped table-condensed text-left">
+      <tr>
+        <th>{{ translations.module }}</th>
+        <th>{{ translations.modifier }}</th>
+      </tr>
+      {% for module in station.modules %}
+      <tr>
+        {% if isinstance(module, tuple) %}
+        <td>{{ module[0].get_name(language) }}</td><td> &times; {{ module[1] }}</td>
+        {% else %}
+        <td>{{ module.get_name(language) }}</td><td> @ {{ module.efficiency }}</td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+    </table>
+  </div>
+  <div id="station-info-productions" class="col-md-4">
+    <h3>{{ translations.productions }}</h3>
+    <table class="table table-striped table-condensed text-left">
+      <tr>
+        <th>{{ translations.ware }}</th>
+        <th>{{ translations.amount }}</th>
+      </tr>
+      {% for production in station.get_production_data() %}
+      <tr>
+        <td>{{ production.ware.get_name(language) }}</td>
+        <td>{{ production.str_amount() }} ({{ production.str_production_rate() }})</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <div id="station-info-consumptions" class="col-md-4">
+    <h3>{{ translations.consumptions }}</h3>
+    <table class="table table-striped table-condensed text-left">
+      <tr>
+        <th>{{ translations.ware }}</th>
+        <th>{{ translations.amount }}</th>
+      </tr>
+      {% for consumption in station.get_consumption_data() %}
+      <tr{% if consumption.is_secondary %} class="info"{% endif %}>
+        <td>{{ consumption.ware.get_name(language) }}</td>
+        <td>{{ consumption.amount }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock content %}

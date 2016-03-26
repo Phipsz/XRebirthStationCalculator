@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block html_head %}
+{#<link href="{{ prefix }}static/apc.css" rel="stylesheet" />#}
+{% endblock html_head %}
+{% block content_header %}
+<small>{{ translations.subtitle }}</small>
+<small><select name="language-selector" size="1" id="sel-language" onchange="languageChanged()">
+  {% for lang in langlist %}
+  <option value="{{ lang }}" {% if lang == language %}selected="selected"{% endif %}>{{ lang }}</option>
+  {% endfor %}
+</select></small>
+{% endblock content_header %}
+{% block content %}
+<div id="station-configuration">
+  <form method="GET" action="/{{ language }}" id="form-station-configuration" onchange="formChanged()">
+    {% for inp in range(num_inputs) %}
+    <div class="form-inline">
+      {% if not (selections and selections.get(inp)) %}
+      <button type="button" class="btn btn-info disabled" data-toggle="modal" data-target="#info-modal-station-{{ inp }}" id="btn-station-{{ inp }}">
+      {% else %}
+      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#info-modal-station-{{ inp }}" id="btn-station-{{ inp }}">
+      {% endif %}
+        <span class="glyphicon glyphicon-info-sign"></span>
+      </button>
+      <select name="station-{{ inp }}" size="1" id="sel-station-{{ inp }}" class="form-control" onchange="stationChanged({{ inp }})">
+      {% for station in station_list %}
+        {% if selections and (selections.get(inp) == station_intern[station.get_name()]) %}
+        <option value="{{ station_intern[station.get_name()] }}" selected="selected">{{ station.get_name(language) }}</option>
+        {% else %}
+        <option value="{{ station_intern[station.get_name()] }}">{{ station.get_name(language) }}</option>
+        {% endif %}
+      {% endfor %}
+      </select>
+      {% if amounts %}
+      <input type="number" 
+             id="num-station-{{ inp }}" 
+             name="c-station-{{ inp }}" 
+             class="form-control" 
+             placeholder="{{ translations.amount }}" 
+             min="0" 
+             value="{{ amounts.get(inp, 1) }}" />
+      {% else %}
+      <input type="number" 
+             id="num-station-{{ inp }}" 
+             name="c-station-{{ inp }}" 
+             class="form-control" 
+             placeholder="{{ translations.amount }}" 
+             min="0" 
+             disabled
+             value="1" />
+      {% endif %}
+    </div>
+    <div class="modal fade" id="info-modal-station-{{ inp }}" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            <h4 class="modal-title"><span id="info-station-{{ inp }}-header">station name</span> <small>{{ translations.station_info }}</small></h4>
+          </div>
+          <div class="modal-body" id="info-modal-station-{{ inp }}-content">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ translations.close }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </form>
+</div>
+{% endblock content %}
+{% block snippets %}
+<div id="waredata">
+</div>
+{% endblock snippets %}
+{% block scripts %}
+<script type="text/javascript"> 
+function languageChanged() {
+  var form = $('#form-station-configuration');
+  form.attr('action', $('#sel-language').val());
+  form.submit();
+};
+
+function stationChanged(id) {
+  var val = $('#sel-station-'+id).val();
+  var button = $('#btn-station-'+id);
+  var num = $('#num-station-'+id);
+  if (val != '') {
+    button.removeClass('disabled');
+    num.prop('disabled', false);
+    $('#info-station-'+id+'-header').html($('#sel-station-'+id+' option:selected').text());
+    $.ajax({url: '/{{ language }}/stations/'+val, async: true, success: function(result) {
+        $('#info-modal-station-'+id+'-content').html($('#content div', $.parseHTML(result)));
+        }
+      });
+  } else {
+    button.addClass('disabled');
+    num.prop('disabled', true);
+  }
+}
+
+function formChanged() {
+  $.ajax({
+      type: 'GET',
+      url: '/{{ language }}/wares',
+      cache: false,
+      data: $('#form-station-configuration').serialize(),
+      success: function(result, status) {
+        $('#waredata').html($('#content table', $.parseHTML(result)));
+      }
+  });
+
+}
+
+$(document).ready(function() {
+  formChanged();
+  {% for inp in range(num_inputs) %}{% if (selections and selections.get(inp)) %}
+  stationChanged({{ inp }});
+  {% endif %}{% endfor %}
+});
+</script> 
+{% endblock scripts %}
