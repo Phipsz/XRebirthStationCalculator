@@ -1,25 +1,14 @@
 from x_rebirth_station_calculator.station_data import modules
-from x_rebirth_station_calculator.station_data import wares
 from x_rebirth_station_calculator.station_data.station_base import Station
-from x_rebirth_station_calculator.station_data.station_base import Production
-from x_rebirth_station_calculator.station_data.station_base import Consumption
 
 names = {'L044': 'Cell Fab Matrix',
          'L049': 'Zell-Fab-Matrix'}
 
-smodules = [(modules.PlasmaCyclotron, 2),
-            (modules.IonCellPlant, 2),
-            (modules.AMCyclotron, 2)]
+smodules = [modules.PlasmaCyclotron(production_method='al', efficiency=146),
+            modules.PlasmaCyclotron(production_method='al', efficiency=146),
+            modules.IonCellPlant(production_method='al', efficiency=141),
+            modules.IonCellPlant(production_method='al', efficiency=141),
+            modules.AMCyclotron(production_method='al', efficiency=141),
+            modules.AMCyclotron(production_method='al', efficiency=141)]
 
-productions = [Production(wares.PlasmaCells, 1440.0, 143.0),
-               Production(wares.IonCells, 1440.0, 139.0),
-               Production(wares.AntimatterCells, 1600.0, 139.0)]
-
-consumptions = [Consumption(wares.EnergyCells, 9600.0),
-                Consumption(wares.FoodRations, 4320.0),
-                Consumption(wares.Plasma, 3200.0),
-                Consumption(wares.Ions, 3200.0),
-                Consumption(wares.Hydrogen, 6400.0),
-                Consumption(wares.Spacefuel, 720.0, True)]
-
-AL_CellFabMatrix = Station(names, smodules, productions, consumptions)
+AL_CellFabMatrix = Station(names, smodules)

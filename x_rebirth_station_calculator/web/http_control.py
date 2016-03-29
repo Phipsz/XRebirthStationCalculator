@@ -97,59 +97,40 @@ def handler_station_calc(environ, suffix=None):
 def handler_calculate_wares(environ, suffix=None):
     from x_rebirth_station_calculator import station_data
     from x_rebirth_station_calculator.web.translations import LOCALE_LIST
-    from operator import methodcaller
-    from decimal import Decimal
+    from x_rebirth_station_calculator.station_data.station_base import Station
+    from collections import namedtuple
     import urllib
     import re
-    print(environ)
     if environ['REQUEST_METHOD'] != 'GET':
         return handler_404(environ)
     language = environ.get('LANGUAGE', 'L044')
     if not language:
         language = 'L044'
     locale.setlocale(locale.LC_ALL, LOCALE_LIST[language])
-    amounts = dict()
-    selections = dict()
+    stations_dict = dict()
+    StationInfo = namedtuple('StationInfo', ['station', 'count'])
     params = urllib.parse.parse_qs(environ.get('QUERY_STRING'))
     for key in sorted(params.keys()):
         match_obj = re.match(r'station-([0-9]+)', key)
         if match_obj:
-            selections[int(match_obj.group(1))] = params[key][0]
+            index = int(match_obj.group(1))
+            if not stations_dict.get(index):
+                stations_dict[index] = dict()
+            stations_dict[index]['station'] = getattr(station_data,
+                                                      params[key][0])
         match_obj = re.match(r'c-station-([0-9]+)', key)
         if match_obj:
-            amounts[int(match_obj.group(1))] = int(params[key][0])
+            index = int(match_obj.group(1))
+            if not stations_dict.get(index):
+                stations_dict[index] = dict()
+            stations_dict[index]['count'] = int(params[key][0])
+    stations = list()
+    for _, st_dict in stations_dict.items():
+        if 'station' in st_dict:
+            stations.append(StationInfo(station=st_dict['station'],
+                                        count=st_dict['count']))
 
-    wares = {'productions': dict(),
-             'consumptions': dict(),
-             'result': dict(),
-             'list': set()}
-    for i in sorted(selections.keys()):
-        station = getattr(station_data, selections[i])
-        count = Decimal(amounts[i])
-        productions = station.get_production_data()
-        consumptions = station.get_consumption_data()
-        for prdctn in productions:
-            warename = prdctn.ware.get_name()
-            wares['list'].add(prdctn.ware)
-            rate = prdctn.get_production_rate() * count
-            if warename in wares['productions']:
-                wares['productions'][warename] += rate
-            else:
-                wares['productions'][warename] = rate
-        for cnsmptn in consumptions:
-            warename = cnsmptn.ware.get_name()
-            wares['list'].add(cnsmptn.ware)
-            rate = cnsmptn.get_consumption_rate() * count
-            if warename in wares['consumptions']:
-                wares['consumptions'][warename] += rate
-            else:
-                wares['consumptions'][warename] = rate
-    wares['list'] = sorted(wares['list'], key=methodcaller('get_name'))
-    for ware in wares['list']:
-        prod_rate = wares['productions'].get(ware.get_name(), 0)
-        cons_rate = wares['consumptions'].get(ware.get_name(), 0)
-        result = prod_rate - cons_rate
-        wares['result'][ware.get_name()] = result.quantize(Decimal('0.01'))
+    wares = Station.get_ware_production_info(stations, language)
 
     status = '200 OK'
     template = _load_template('wares.html')

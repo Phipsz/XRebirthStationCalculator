@@ -1,20 +1,14 @@
 from x_rebirth_station_calculator.station_data import modules
-from x_rebirth_station_calculator.station_data import wares
 from x_rebirth_station_calculator.station_data.station_base import Station
-from x_rebirth_station_calculator.station_data.station_base import Production
-from x_rebirth_station_calculator.station_data.station_base import Consumption
 
 names = {'L044': 'Pharma-Spice Farm',
          'L049': 'Heilpflanzenplantage'}
 
-smodules = [(modules.SpiceTubes, 3),
-            (modules.HerbGarden, 3)]
+smodules = [modules.SpiceTubes(efficiency=166),
+            modules.SpiceTubes(efficiency=163),
+            modules.SpiceTubes(efficiency=163),
+            modules.HerbGarden(efficiency=167),
+            modules.HerbGarden(efficiency=167),
+            modules.HerbGarden(efficiency=167)]
 
-productions = [Production(wares.Spices, 9600.0, 159.67),
-               Production(wares.Spaceweed, 3600.0, 162.0)]
-
-consumptions = [Consumption(wares.EnergyCells, 3840.0),
-                Consumption(wares.Spacefuel, 720.0),
-                Consumption(wares.Water, 14400.0)]
-
-OL_PharmaSpiceFarm = Station(names, smodules, productions, consumptions)
+OL_PharmaSpiceFarm = Station(names, smodules)

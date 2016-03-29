@@ -17,16 +17,12 @@
       </h2>
     </div>
     <div id="body" class="row">
-      <div id="content-wrapper" class="col-md-6">
+      <div id="content-wrapper">
         <div id="content-header"><h4>{% block content_header %}{% endblock content_header %}</h4></div>
         <div id="content">
           {% block content %}
           {% endblock content %}
         </div>
-      </div>
-      <div id="snippets" class="col-md-6">
-        {% block snippets %}
-        {% endblock snippets %}
       </div>
     </div>
     <script src="static/js/jquery-2.2.2.min.js"></script>

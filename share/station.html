@@ -4,6 +4,7 @@
 {% endblock html_head %}
 {% block header %}{% endblock header %}
 {% block content %}
+{{ station.sort_data(language) }}
 <div class="row text-center">
   <div id="station-info-modules" class="col-md-4">
     <h3>{{ translations.modules }}</h3>
@@ -17,7 +18,7 @@
         {% if isinstance(module, tuple) %}
         <td>{{ module[0].get_name(language) }}</td><td> &times; {{ module[1] }}</td>
         {% else %}
-        <td>{{ module.get_name(language) }}</td><td> @ {{ module.efficiency }}</td>
+        <td>{{ module.get_name(language) }}</td><td> @ {{ module.efficiency }}%</td>
         {% endif %}
       </tr>
     {% endfor %}
@@ -33,7 +34,7 @@
       {% for production in station.get_production_data() %}
       <tr>
         <td>{{ production.ware.get_name(language) }}</td>
-        <td>{{ production.str_amount() }} ({{ production.str_production_rate() }})</td>
+        <td>{{ production.str_amount(language) }} ({{ production.str_production_rate(language) }})</td>
       </tr>
       {% endfor %}
     </table>
@@ -48,7 +49,7 @@
       {% for consumption in station.get_consumption_data() %}
       <tr{% if consumption.is_secondary %} class="info"{% endif %}>
         <td>{{ consumption.ware.get_name(language) }}</td>
-        <td>{{ consumption.amount }}</td>
+        <td>{{ formatter(consumption.amount) }}</td>
       </tr>
       {% endfor %}
     </table>
